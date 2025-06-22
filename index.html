@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+	<style>
+	body{
+	background-color: black;
+	color: white;
+	}
+	table{
+		width: 100%;
+		color: black;
+	}
+	table, th, td {
+    	border: 1px solid black;
+    	border-collapse: collapse;
+		}
+
+	 tr:nth-child(1) {
+  		background-color:#04aa6d;
+		color: #ffffff;
+	}
+	tr:nth-child(even) {
+		background-color: #ffffff;
+
+	}
+	tr:empty{
+		background-color: #000000;
+	}
+	tr{
+		background-color: #e7e9eb;
+	}
+	input[type=text]{
+		padding: 12px 20px;
+		margin: 8px 0;
+		text-align: center	
+	}
+	/*input[type=text]:focus{
+		border: 3px #555;
+	}
+	*/
+	.center{
+			margin:auto;
+			width: 50%;
+			padding: 10px;
+
+		}
+	button{
+		padding: 4px 10px;
+		margin: 0 0;
+		cursor: pointer;
+	}
+	
+	</style>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link href="css/style.css" rel="stylesheet">
+	</head>
+	<body>
+	<div>
+	<form method = post>
+			AbfahrtsHaltestelle:<br><input type="text" name="origin" placeholder="z.B. Frankfurt Hauptbahnhof">
+						<br>
+			AnkunftsHaltestelle:<br><input type="text" name="destination" placeholder="z.B. Frankfurt Nibelungenplatz ">
+			<br>
+			<button type="submit">Bestätigen</button>
+	</form>	
+	</div>
+	<br>
+	<div>
+	<table>
+		<tr>
+		<th>Gefährt:</th>
+		<th>Abfahrt:</th>
+		<th>Von:</th>
+		<th>Nach:</th>
+		<th>Ankunft:</th>
+		</tr>
+		{{ range .Connections }}
+		<tr>
+			<td>{{ .Vehicle }}</td>
+			<td>{{ .DepartureTime }}</td>
+			<td>{{ .DepartureLocation }}</td>
+			<td>{{ .ArrivalLocation }}</td>
+			<td>{{ .ArrivalTime }}</td>
+		</tr>
+		{{ end }}
+	</table>
+	</div>
+	</body>
+</html>
