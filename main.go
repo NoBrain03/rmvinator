@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/buger/jsonparser"
+	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"text/template"
-	"github.com/buger/jsonparser"
-	"github.com/joho/godotenv"
 )
 
 type Connection struct {
@@ -23,9 +23,9 @@ type Connections struct {
 	Connections []Connection
 }
 
-
 func getstops(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
+	switch r.Method {
+	case http.MethodGet:
 		isa := Connections{}
 		isa.Connections = append(isa.Connections, Connection{
 			Vehicle:           "Irgendein Bus",
@@ -39,7 +39,7 @@ func getstops(w http.ResponseWriter, r *http.Request) {
 			log.Default().Fatalln("Die Template will irgendwie nicht \\(-o-)/")
 		}
 
-	} else if r.Method == http.MethodPost {
+	case http.MethodPost:
 
 		err := r.ParseForm()
 		if err != nil {
@@ -78,7 +78,7 @@ func getstops(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Default().Fatalln("Die Template ist schon wieder ein Problemkind...", err)
 		}
-	} else {
+	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 }
@@ -129,7 +129,7 @@ func get_connection(jsonString []byte) Connections {
 
 			Vehicle, _, _, err := jsonparser.Get(result, "name")
 			connection.Vehicle = string(Vehicle)
-			
+
 			departureTime, _, _, err := jsonparser.Get(result, "Origin", "time")
 			departureLocation, _, _, err := jsonparser.Get(result, "Freq", "journey", "[0]", "Stops", "Stop", "[0]", "name")
 			connection.DepartureTime = string(departureTime)
@@ -143,6 +143,13 @@ func get_connection(jsonString []byte) Connections {
 			conns.Connections = append(conns.Connections, connection)
 
 		}, "LegList", "Leg")
+		conns.Connections = append(conns.Connections, Connection{
+			Vehicle:           "-",
+			DepartureTime:     "-",
+			DepartureLocation: "_",
+			ArrivalTime:       "-",
+			ArrivalLocation:   "-",
+		})
 	}, "Trip")
 
 	return conns

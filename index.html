@@ -13,12 +13,7 @@
     	border: 1px solid black;
     	border-collapse: collapse;
 		}
-
-	 tr:nth-child(1) {
-  		background-color:#04aa6d;
-		color: #ffffff;
-	}
-	tr:nth-child(even) {
+	tr:nth-child(3n+1) {
 		background-color: #ffffff;
 
 	}
@@ -27,7 +22,11 @@
 	}
 	tr{
 		background-color: #e7e9eb;
+	}tr:nth-child(1) {
+  		background-color:#04aa6d;
+		color: #ffffff;
 	}
+
 	input[type=text]{
 		padding: 12px 20px;
 		margin: 8px 0;
